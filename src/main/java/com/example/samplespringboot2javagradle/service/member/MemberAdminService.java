@@ -4,6 +4,8 @@ import com.example.samplespringboot2javagradle.dto.member.MemberAdminRspDto;
 import com.example.samplespringboot2javagradle.dto.member.MemberSaveReqDto;
 import com.example.samplespringboot2javagradle.dto.member.MemberUpdateReqDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  *
@@ -14,13 +16,15 @@ import java.util.List;
  * @since 1.0
  */
 public interface MemberAdminService {
-    MemberAdminRspDto saveMember(MemberSaveReqDto reqDto);
+  MemberAdminRspDto saveMember(MemberSaveReqDto reqDto);
 
-    MemberAdminRspDto findMember(Long id);
+  MemberAdminRspDto get(Long id);
 
-    List<MemberAdminRspDto> findAllMembers();
+  List<MemberAdminRspDto> findAllMembers();
 
-    MemberAdminRspDto updateMember(Long id, MemberUpdateReqDto reqDto);
+  Page<MemberAdminRspDto> findPage(PageRequest pageRequest);
 
-    void deleteMember(Long id);
+  MemberAdminRspDto updateMember(Long id, MemberUpdateReqDto reqDto);
+
+  void deleteMember(Long id);
 }

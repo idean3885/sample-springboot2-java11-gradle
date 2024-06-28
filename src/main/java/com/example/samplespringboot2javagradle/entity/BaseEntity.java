@@ -24,19 +24,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Column(updatable = false, nullable = false)
-    @CreatedBy
-    private Long createdBy;
+  @Column(updatable = false, nullable = false)
+  @CreatedBy
+  private Long createdBy;
 
-    @Column(updatable = false, nullable = false)
-    @CreatedDate
-    private LocalDateTime createdDate;
+  @Column(updatable = false, nullable = false)
+  @CreatedDate
+  private LocalDateTime createdDate;
 
-    @Column(nullable = false)
-    @LastModifiedBy
-    private Long lastModifiedBy;
+  @Column(nullable = false)
+  @LastModifiedBy
+  private Long lastModifiedBy;
 
-    @Column(nullable = false)
-    @LastModifiedDate
-    private LocalDateTime lastModifiedDate;
+  @Column(nullable = false)
+  @LastModifiedDate
+  private LocalDateTime lastModifiedDate;
 }

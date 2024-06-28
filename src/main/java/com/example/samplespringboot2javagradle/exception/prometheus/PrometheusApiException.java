@@ -1,6 +1,5 @@
 package com.example.samplespringboot2javagradle.exception.prometheus;
 
-import com.example.samplespringboot2javagradle.exception.BaseRuntimeException;
 import feign.FeignException;
 import lombok.Getter;
 
@@ -13,9 +12,9 @@ import lombok.Getter;
  * @since 1.0
  */
 @Getter
-public class PrometheusApiException extends BaseRuntimeException {
+public class PrometheusApiException extends RuntimeException {
 
-    public PrometheusApiException(FeignException e) {
-        super(e.getMessage(), e);
-    }
+  public PrometheusApiException(FeignException e) {
+    super(e.getMessage(), e);
+  }
 }

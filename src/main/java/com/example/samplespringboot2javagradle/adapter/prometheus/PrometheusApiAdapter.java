@@ -14,31 +14,31 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since 1.0
  */
 @FeignClient(
-        name = "prometheusApiAdapter",
-        url = "${prometheus.base-url}",
-        configuration = {PrometheusApiAdapterConfig.class})
+    name = "prometheusApiAdapter",
+    url = "${prometheus.base-url}",
+    configuration = {PrometheusApiAdapterConfig.class})
 public interface PrometheusApiAdapter {
 
-    /**
-     *
-     *
-     * <h3>Query range</h3>
-     *
-     * <b>timeseries 최대 검색 갯수 제한: 각 메트릭 당 11000개</b>
-     *
-     * @param query query
-     * @return Object
-     */
-    @GetMapping("/api/v1/query_range")
-    Object queryRange(
-            @RequestParam String query,
-            @RequestParam String start,
-            @RequestParam String end,
-            @RequestParam String step);
+  /**
+   *
+   *
+   * <h3>Query range</h3>
+   *
+   * <b>timeseries 최대 검색 갯수 제한: 각 메트릭 당 11000개</b>
+   *
+   * @param query query
+   * @return Object
+   */
+  @GetMapping("/api/v1/query_range")
+  Object queryRange(
+      @RequestParam String query,
+      @RequestParam String start,
+      @RequestParam String end,
+      @RequestParam String step);
 
-    @GetMapping("/api/v1/series")
-    Object getSeries(
-            @RequestParam(name = "match[]") String match,
-            @RequestParam String start,
-            @RequestParam String end);
+  @GetMapping("/api/v1/series")
+  Object getSeries(
+      @RequestParam(name = "match[]") String match,
+      @RequestParam String start,
+      @RequestParam String end);
 }

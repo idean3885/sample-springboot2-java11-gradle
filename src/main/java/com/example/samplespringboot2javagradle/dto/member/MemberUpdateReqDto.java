@@ -22,6 +22,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class MemberUpdateReqDto {
 
-    private String email;
-    private String password;
+  private String email;
+  private String password;
 }

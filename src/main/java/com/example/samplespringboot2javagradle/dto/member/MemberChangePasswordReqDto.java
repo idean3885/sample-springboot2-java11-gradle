@@ -21,6 +21,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class MemberChangePasswordReqDto {
 
-    @NotNull private String currentPassword;
-    @NotNull private String newPassword;
+  @NotNull private String currentPassword;
+  @NotNull private String newPassword;
 }

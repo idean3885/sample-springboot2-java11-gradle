@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StepUnit {
-    SECOND("s"),
-    MINUTE("m"),
-    HOUR("h"),
-    DAY("d");
+  SECOND("s"),
+  MINUTE("m"),
+  HOUR("h"),
+  DAY("d");
 
-    private final String unit;
+  private final String unit;
 }

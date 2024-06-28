@@ -16,13 +16,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApiDocsConfig {
 
-    @Bean
-    public OpenAPI openApi(
-            @Value("${springdoc.version}") String version,
-            @Value("${springdoc.title}") String title,
-            @Value("${springdoc.description}") String description) {
-        return new OpenAPI()
-                .components(new Components())
-                .info(new Info().version(version).title(title).description(description));
-    }
+  @Bean
+  public OpenAPI openApi(
+      @Value("${springdoc.version}") String version,
+      @Value("${springdoc.title}") String title,
+      @Value("${springdoc.description}") String description) {
+    return new OpenAPI()
+        .components(new Components())
+        .info(new Info().version(version).title(title).description(description));
+  }
 }

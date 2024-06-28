@@ -26,57 +26,57 @@ import org.springframework.http.MediaType;
 @Slf4j
 public class PrometheusApiAdapterConfig {
 
-    @Bean
-    public ErrorDecoder errorDecoder() {
-        return new PrometheusApiAdapterErrorDecoder();
-    }
+  @Bean
+  public ErrorDecoder errorDecoder() {
+    return new PrometheusApiAdapterErrorDecoder();
+  }
 
-    @Bean
-    public Retryer retryer() {
-        return new Default(100, 200, 3);
-    }
+  @Bean
+  public Retryer retryer() {
+    return new Default(100, 200, 3);
+  }
 
-    @Bean
-    RequestInterceptor requestInterceptor() {
-        return new PrometheusApiAdapterInterceptor();
-    }
+  @Bean
+  RequestInterceptor requestInterceptor() {
+    return new PrometheusApiAdapterInterceptor();
+  }
 
-    private static class PrometheusApiAdapterErrorDecoder implements ErrorDecoder {
+  private static class PrometheusApiAdapterErrorDecoder implements ErrorDecoder {
 
-        private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-        @Override
-        public Exception decode(String methodKey, Response response) {
-            var exception = feign.FeignException.errorStatus(methodKey, response);
-            var httpCode = HttpStatus.valueOf(response.status());
-            if (httpCode.is5xxServerError()) {
-                var ow = objectMapper.writerWithDefaultPrettyPrinter();
-                try {
-                    var loggingMessage =
-                            String.format(
-                                    "[%d][%s]Prometheus API API retry because response 5xx. body: %s",
-                                    httpCode.value(), httpCode.name(), ow.writeValueAsString(response.body()));
-                    log.error(loggingMessage);
-                } catch (JsonProcessingException e) {
-                    log.error("ResponseBody logging failed!", e);
-                }
-                return new RetryableException(
-                        response.status(),
-                        exception.getMessage(),
-                        response.request().httpMethod(),
-                        exception,
-                        null,
-                        response.request());
-            }
-            return new PrometheusApiException(exception);
+    @Override
+    public Exception decode(String methodKey, Response response) {
+      var exception = feign.FeignException.errorStatus(methodKey, response);
+      var httpCode = HttpStatus.valueOf(response.status());
+      if (httpCode.is5xxServerError()) {
+        var ow = objectMapper.writerWithDefaultPrettyPrinter();
+        try {
+          var loggingMessage =
+              String.format(
+                  "[%d][%s]Prometheus API API retry because response 5xx. body: %s",
+                  httpCode.value(), httpCode.name(), ow.writeValueAsString(response.body()));
+          log.error(loggingMessage);
+        } catch (JsonProcessingException e) {
+          log.error("ResponseBody logging failed!", e);
         }
+        return new RetryableException(
+            response.status(),
+            exception.getMessage(),
+            response.request().httpMethod(),
+            exception,
+            null,
+            response.request());
+      }
+      return new PrometheusApiException(exception);
     }
+  }
 
-    private static class PrometheusApiAdapterInterceptor implements RequestInterceptor {
+  private static class PrometheusApiAdapterInterceptor implements RequestInterceptor {
 
-        @Override
-        public void apply(RequestTemplate template) {
-            template.header("Accept", MediaType.APPLICATION_JSON_VALUE);
-        }
+    @Override
+    public void apply(RequestTemplate template) {
+      template.header("Accept", MediaType.APPLICATION_JSON_VALUE);
     }
+  }
 }

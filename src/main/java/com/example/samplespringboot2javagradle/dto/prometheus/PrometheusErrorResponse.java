@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PrometheusErrorResponse {
 
-    private String status;
-    private String errorType;
-    private String error;
+  private String status;
+  private String errorType;
+  private String error;
 }

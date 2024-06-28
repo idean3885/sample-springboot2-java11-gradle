@@ -20,13 +20,13 @@ import javax.persistence.Converter;
 @Converter
 public class MemberStatusConverter implements AttributeConverter<MemberStatus, Long> {
 
-    @Override
-    public Long convertToDatabaseColumn(MemberStatus attribute) {
-        return attribute.getCode();
-    }
+  @Override
+  public Long convertToDatabaseColumn(MemberStatus attribute) {
+    return attribute.getCode();
+  }
 
-    @Override
-    public MemberStatus convertToEntityAttribute(Long dbData) {
-        return MemberStatus.valueOf(dbData);
-    }
+  @Override
+  public MemberStatus convertToEntityAttribute(Long dbData) {
+    return MemberStatus.valueOf(dbData);
+  }
 }

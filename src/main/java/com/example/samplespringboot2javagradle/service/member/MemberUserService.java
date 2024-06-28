@@ -13,9 +13,9 @@ import com.example.samplespringboot2javagradle.dto.member.MemberUserRspDto;
  */
 public interface MemberUserService {
 
-    MemberUserRspDto get(Long id);
+  MemberUserRspDto get(Long id);
 
-    MemberUserRspDto changePassword(Long id, MemberChangePasswordReqDto memberReqDto);
+  MemberUserRspDto changePassword(Long id, MemberChangePasswordReqDto memberReqDto);
 
-    MemberUserRspDto withdraw(Long id);
+  MemberUserRspDto withdraw(Long id);
 }

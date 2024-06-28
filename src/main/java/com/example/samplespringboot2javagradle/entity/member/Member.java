@@ -32,26 +32,26 @@ import org.hibernate.annotations.Comment;
 @Entity(name = "members")
 public class Member extends BaseEntity implements Serializable {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private Long id;
 
-    @Email
-    @Comment("이메일")
-    @Column(unique = true, nullable = false, length = 100)
-    private String email;
+  @Email
+  @Comment("이메일")
+  @Column(unique = true, nullable = false, length = 100)
+  private String email;
 
-    @Comment("비밀번호")
-    @Column(nullable = false, length = 100)
-    private String password;
+  @Comment("비밀번호")
+  @Column(nullable = false, length = 100)
+  private String password;
 
-    @Convert(converter = MemberRoleListConverter.class)
-    @Comment("권한 목록")
-    @Column(nullable = false, length = 50)
-    private List<MemberRole> roleList;
+  @Convert(converter = MemberRoleListConverter.class)
+  @Comment("권한 목록")
+  @Column(nullable = false, length = 50)
+  private List<MemberRole> roleList;
 
-    @Convert(converter = MemberStatusConverter.class)
-    @Comment("회원 상태")
-    @Column(nullable = false, length = 1)
-    private MemberStatus status;
+  @Convert(converter = MemberStatusConverter.class)
+  @Comment("회원 상태")
+  @Column(nullable = false, length = 1)
+  private MemberStatus status;
 }

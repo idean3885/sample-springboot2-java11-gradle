@@ -29,37 +29,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(basePackageClasses = PrometheusRestController.class)
 public class PrometheusRestControllerAdvice {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @ExceptionHandler(PrometheusApiException.class)
-    public ResponseEntity<Object> handlePrometheusApiException(PrometheusApiException e) {
-        var fe = (FeignException) e.getCause();
-        var httpCode = HttpStatus.valueOf(fe.status());
-        var responseByteBuffer = fe.responseBody().orElseGet(() -> ByteBuffer.wrap(new byte[0]));
-        var responseBody = deSerializer(responseByteBuffer);
-        var ow = objectMapper.writerWithDefaultPrettyPrinter();
-        try {
-            var loggingMessage =
-                    String.format(
-                            "[%d][%s]Prometheus API processing failed. body: %s",
-                            httpCode.value(), httpCode.name(), ow.writeValueAsString(responseBody));
-            log.error(loggingMessage);
-        } catch (JsonProcessingException e2) {
-            log.error("ResponseBody logging failed!", e2);
-        }
-        return ResponseEntity.status(fe.status()).body(responseBody.getError());
+  @ExceptionHandler(PrometheusApiException.class)
+  public ResponseEntity<Object> handlePrometheusApiException(PrometheusApiException e) {
+    var fe = (FeignException) e.getCause();
+    var httpCode = HttpStatus.valueOf(fe.status());
+    var responseByteBuffer = fe.responseBody().orElseGet(() -> ByteBuffer.wrap(new byte[0]));
+    var responseBody = deserializer(responseByteBuffer);
+    var ow = objectMapper.writerWithDefaultPrettyPrinter();
+    try {
+      var loggingMessage =
+          String.format(
+              "[%d][%s]Prometheus API processing failed. body: %s",
+              httpCode.value(), httpCode.name(), ow.writeValueAsString(responseBody));
+      log.error(loggingMessage);
+    } catch (JsonProcessingException e2) {
+      log.error("ResponseBody logging failed!", e2);
     }
+    return ResponseEntity.status(fe.status()).body(responseBody.getError());
+  }
 
-    private PrometheusErrorResponse deSerializer(ByteBuffer byteBuffer) {
-        var bytes = new byte[byteBuffer.limit()];
-        byteBuffer.get(bytes);
-        try {
-            return objectMapper.readValue(bytes, PrometheusErrorResponse.class);
-        } catch (IOException e) {
-            log.error("Failed to deserialize object. return default response.", e);
-        }
-        return PrometheusErrorResponse.builder()
-                .error("Unexpect exception occur or body is null")
-                .build();
+  private PrometheusErrorResponse deserializer(ByteBuffer byteBuffer) {
+    var bytes = new byte[byteBuffer.limit()];
+    byteBuffer.get(bytes);
+    try {
+      return objectMapper.readValue(bytes, PrometheusErrorResponse.class);
+    } catch (IOException e) {
+      log.error("Failed to deserialize object. return default response.", e);
     }
+    return PrometheusErrorResponse.builder()
+        .error("Unexpect exception occur or body is null")
+        .build();
+  }
 }

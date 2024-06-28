@@ -1,0 +1,19 @@
+#!/bin/sh
+
+stagedFiles=$(git diff --staged --name-only)
+
+# run the tests with the gradle wrapper
+
+./gradlew spotlessApply
+
+# store the last exit code in a variable
+RESULT=$?
+
+for file in $stagedFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done
+
+# return the './gradlew test' exit code
+exit $RESULT

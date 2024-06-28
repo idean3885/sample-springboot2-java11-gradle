@@ -16,14 +16,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class AuditorAwareImpl implements AuditorAware<Long> {
 
-    @NotNull
-    @Override
-    public Optional<Long> getCurrentAuditor() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (null == authentication || !authentication.isAuthenticated()) {
-            return Optional.empty();
-        }
-        var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return Optional.of(userDetails.getMember().getId());
+  @NotNull @Override
+  public Optional<Long> getCurrentAuditor() {
+    var authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (null == authentication || !authentication.isAuthenticated()) {
+      return Optional.empty();
     }
+    var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    return Optional.of(userDetails.getMember().getId());
+  }
 }

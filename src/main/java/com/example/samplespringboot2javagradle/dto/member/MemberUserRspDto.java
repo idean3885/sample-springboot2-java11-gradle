@@ -25,15 +25,15 @@ import lombok.ToString;
 @Builder
 public class MemberUserRspDto {
 
-    private Long id;
-    private String email;
-    private List<MemberRole> roleList;
-    private MemberStatus status;
+  private Long id;
+  private String email;
+  private List<MemberRole> roleList;
+  private MemberStatus status;
 
-    public MemberUserRspDto(Member member) {
-        this.id = member.getId();
-        this.email = member.getEmail();
-        this.roleList = member.getRoleList();
-        this.status = member.getStatus();
-    }
+  public MemberUserRspDto(Member member) {
+    this.id = member.getId();
+    this.email = member.getEmail();
+    this.roleList = member.getRoleList();
+    this.status = member.getStatus();
+  }
 }

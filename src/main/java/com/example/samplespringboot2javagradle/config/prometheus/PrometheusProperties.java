@@ -19,5 +19,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("prometheus")
 public class PrometheusProperties {
 
-    private String baseUrl;
+  private String baseUrl;
 }

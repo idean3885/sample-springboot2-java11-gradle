@@ -26,16 +26,16 @@ import lombok.ToString;
 @AllArgsConstructor
 public class MemberSaveReqDto {
 
-    @NotNull @Email private String email;
+  @NotNull @Email private String email;
 
-    @NotNull private String password;
+  @NotNull private String password;
 
-    public Member toEntity() {
-        return Member.builder()
-                .email(email)
-                .password(password)
-                .roleList(List.of(MemberRole.USER))
-                .status(MemberStatus.ACTIVE)
-                .build();
-    }
+  public Member toEntity() {
+    return Member.builder()
+        .email(email)
+        .password(password)
+        .roleList(List.of(MemberRole.USER))
+        .status(MemberStatus.ACTIVE)
+        .build();
+  }
 }

@@ -19,13 +19,13 @@ import org.apache.commons.lang3.StringUtils;
 @Converter
 public class MemberRoleListConverter implements AttributeConverter<List<MemberRole>, String> {
 
-    @Override
-    public String convertToDatabaseColumn(List<MemberRole> attribute) {
-        return StringUtils.join(attribute, ",");
-    }
+  @Override
+  public String convertToDatabaseColumn(List<MemberRole> attribute) {
+    return StringUtils.join(attribute, ",");
+  }
 
-    @Override
-    public List<MemberRole> convertToEntityAttribute(String dbData) {
-        return Arrays.stream(dbData.split(",")).map(MemberRole::valueOf).collect(Collectors.toList());
-    }
+  @Override
+  public List<MemberRole> convertToEntityAttribute(String dbData) {
+    return Arrays.stream(dbData.split(",")).map(MemberRole::valueOf).collect(Collectors.toList());
+  }
 }

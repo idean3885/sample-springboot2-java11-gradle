@@ -1,13 +1,13 @@
 plugins {
     id 'java'
+    id 'groovy'
     id 'org.springframework.boot' version '2.7.15'
-    id("com.diffplug.spotless") version("6.11.0") // 코드 포맷팅
+    id("com.diffplug.spotless") version '6.11.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+apply from: rootProject.file('gradle/install-git-hooks.gradle')
 
 java {
     sourceCompatibility = '11'
@@ -17,13 +17,9 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    set('springCloudVersion', "2021.0.4")
-}
-
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${property('spring-cloud.version')}"
     }
 }
 
@@ -49,8 +45,7 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
 
     // H2 Database for standalone
-    implementation 'com.h2database:h2:2.2.220'
-    testImplementation 'com.h2database:h2:2.2.220'
+    runtimeOnly 'com.h2database:h2'
 
     // Api docs
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
@@ -71,6 +66,20 @@ dependencies {
     // Spring security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // queryDSL 설정
+    implementation "com.querydsl:querydsl-jpa:${property('querydsl.version')}"
+    annotationProcessor "com.querydsl:querydsl-apt:${property('querydsl.version')}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+    // groovy Spock test
+    testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
+    testImplementation "org.spockframework:spock-spring:2.4-M1-groovy-4.0"
+    testImplementation "org.apache.groovy:groovy:4.0.11"
+    testImplementation "org.apache.groovy:groovy-json:4.0.11"
+    testImplementation "com.squareup.okhttp3:okhttp:4.9.3"
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.12.0"
 }
 
 tasks.named('test') {
@@ -78,30 +87,22 @@ tasks.named('test') {
 }
 
 spotless {
-    java {
-        // import 순서 정의
-        importOrder(
-                "java",
-                "javax",
-                "lombok",
-                "org.springframework",
-                "",
-                "\\#",
-                "org.junit",
-                "\\#org.junit",
-                "com.guide",
-                "\\#com.guide"
-        )
-        // 사용하지 않는 import 제거
-        removeUnusedImports()
-        // 구글 자바 포맷 적용
-        googleJavaFormat()
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
 
-        indentWithTabs(2)
-        indentWithSpaces(4)
-        // 공백 제거
         trimTrailingWhitespace()
-        // 끝부분 New Line 처리
+        indentWithSpaces(2)
         endWithNewline()
+    }
+    java {
+        importOrder()
+        removeUnusedImports()
+        indentWithSpaces(2)
+        googleJavaFormat()
+        formatAnnotations()
+    }
+    groovy {
+        importOrder()
+        excludeJava()
     }
 }

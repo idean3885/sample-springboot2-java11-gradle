@@ -11,8 +11,6 @@ import org.springframework.data.repository.CrudRepository;
  * @author dongyoung.kim
  * @since 1.0
  */
-public interface MemberRepository extends CrudRepository<Member, Long> {
-    Optional<Member> findByEmailAndStatus(String email, MemberStatus status);
-
-    boolean existsByIdAndStatus(Long id, MemberStatus status);
+public interface MemberJpaRepository extends CrudRepository<Member, Long> {
+  Optional<Member> findByEmailAndStatus(String email, MemberStatus status);
 }

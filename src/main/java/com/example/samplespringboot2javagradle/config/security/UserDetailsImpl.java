@@ -15,44 +15,44 @@ import org.springframework.security.core.userdetails.UserDetails;
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private final Member member;
+  private final Member member;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        var memberRoleList = member.getRoleList();
-        return memberRoleList.stream()
-                .map(MemberRole::name)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    var memberRoleList = member.getRoleList();
+    return memberRoleList.stream()
+        .map(MemberRole::name)
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public String getPassword() {
-        return member.getPassword();
-    }
+  @Override
+  public String getPassword() {
+    return member.getPassword();
+  }
 
-    @Override
-    public String getUsername() {
-        return member.getEmail();
-    }
+  @Override
+  public String getUsername() {
+    return member.getEmail();
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return MemberStatus.ACTIVE.equals(member.getStatus());
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return MemberStatus.ACTIVE.equals(member.getStatus());
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return MemberStatus.ACTIVE.equals(member.getStatus());
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return MemberStatus.ACTIVE.equals(member.getStatus());
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return MemberStatus.ACTIVE.equals(member.getStatus());
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return MemberStatus.ACTIVE.equals(member.getStatus());
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return MemberStatus.ACTIVE.equals(member.getStatus());
-    }
+  @Override
+  public boolean isEnabled() {
+    return MemberStatus.ACTIVE.equals(member.getStatus());
+  }
 }

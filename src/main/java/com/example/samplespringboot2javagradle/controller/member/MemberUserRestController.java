@@ -28,45 +28,45 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0
  */
 @PreAuthorize(
-        "hasRole('#{T(com.example.samplespringboot2javagradle.config.security.RoleType).USER}')")
+    "hasRole('#{T(com.example.samplespringboot2javagradle.config.security.RoleType).USER}')")
 @RequestMapping("api/members/v1/user")
 @RequiredArgsConstructor
 @RestController
 public class MemberUserRestController {
 
-    private final MemberUserService memberUserService;
+  private final MemberUserService memberUserService;
 
-    @ApiResponses(
-            value = {
-                @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
-            })
-    @Operation(summary = "회원 조회", description = "활성화된 회원만 조회 가능")
-    @GetMapping
-    public MemberUserRspDto get(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return memberUserService.get(userDetails.getMember().getId());
-    }
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+      })
+  @Operation(summary = "회원 조회", description = "활성화된 회원만 조회 가능")
+  @GetMapping
+  public MemberUserRspDto get(
+      @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return memberUserService.get(userDetails.getMember().getId());
+  }
 
-    @ApiResponses(
-            value = {
-                @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
-            })
-    @Operation(summary = "비밀번호 수정", description = "활성화된 회원만 수정 가능")
-    @PutMapping("password")
-    public MemberUserRspDto changePassword(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestBody MemberChangePasswordReqDto reqDto) {
-        return memberUserService.changePassword(userDetails.getMember().getId(), reqDto);
-    }
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+      })
+  @Operation(summary = "비밀번호 수정", description = "활성화된 회원만 수정 가능")
+  @PutMapping("password")
+  public MemberUserRspDto changePassword(
+      @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @Valid @RequestBody MemberChangePasswordReqDto reqDto) {
+    return memberUserService.changePassword(userDetails.getMember().getId(), reqDto);
+  }
 
-    @ApiResponses(
-            value = {
-                @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
-            })
-    @Operation(summary = "회원 탈퇴", description = "활성화된 회원만 탈퇴 가능, 모든 권한을 회수하고 상태를 탈퇴로 변경합니다.")
-    @DeleteMapping
-    public MemberUserRspDto withdraw(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return memberUserService.withdraw(userDetails.getMember().getId());
-    }
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+      })
+  @Operation(summary = "회원 탈퇴", description = "활성화된 회원만 탈퇴 가능, 모든 권한을 회수하고 상태를 탈퇴로 변경합니다.")
+  @DeleteMapping
+  public MemberUserRspDto withdraw(
+      @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return memberUserService.withdraw(userDetails.getMember().getId());
+  }
 }

@@ -14,17 +14,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum MemberStatus {
-    ACTIVE(1L),
-    WITHDRAW(2L),
-    ;
-    private final Long code;
+  ACTIVE(1L),
+  WITHDRAW(2L),
+  ;
+  private final Long code;
 
-    public static MemberStatus valueOf(Long code) {
-        for (MemberStatus status : values()) {
-            if (status.code.equals(code)) {
-                return status;
-            }
-        }
-        throw new IllegalArgumentException("No matching constant for [" + code + "]");
+  public static MemberStatus valueOf(Long code) {
+    for (MemberStatus status : values()) {
+      if (status.code.equals(code)) {
+        return status;
+      }
     }
+    throw new IllegalArgumentException("No matching constant for [" + code + "]");
+  }
 }
