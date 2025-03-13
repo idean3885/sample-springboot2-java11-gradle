@@ -1,0 +1,108 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'org.springframework.boot' version '2.7.15'
+    id("com.diffplug.spotless") version '6.11.0'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+apply from: rootProject.file('gradle/install-git-hooks.gradle')
+
+java {
+    sourceCompatibility = '11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${property('spring-cloud.version')}"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MySQL
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+
+    // MariaDB
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
+
+    // H2 Database for standalone
+    runtimeOnly 'com.h2database:h2'
+
+    // Api docs
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+    // devtools - for live loading
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // feign client - for api call
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-okhttp'
+
+    // actuator - for health check & use prometheus metrics api
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // prometheus - for metrics
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.12.5'
+
+    // Spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // queryDSL 설정
+    implementation "com.querydsl:querydsl-jpa:${property('querydsl.version')}"
+    annotationProcessor "com.querydsl:querydsl-apt:${property('querydsl.version')}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+    // groovy Spock test
+    testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
+    testImplementation "org.spockframework:spock-spring:2.4-M1-groovy-4.0"
+    testImplementation "org.apache.groovy:groovy:4.0.11"
+    testImplementation "org.apache.groovy:groovy-json:4.0.11"
+    testImplementation "com.squareup.okhttp3:okhttp:4.9.3"
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.12.0"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+spotless {
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
+
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    java {
+        importOrder()
+        removeUnusedImports()
+        indentWithSpaces(2)
+        googleJavaFormat()
+        formatAnnotations()
+    }
+    groovy {
+        importOrder()
+        excludeJava()
+    }
+}

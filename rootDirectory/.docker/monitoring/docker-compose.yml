@@ -1,0 +1,33 @@
+version: '3.8'
+networks:
+  monitor:
+    driver: bridge
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-container
+#    user: "501" # PV 설정 시 사용, 쓰기 가능한 uid(예, 로그인 계정 uid) 설정
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    expose:
+      - "9090"
+    ports:
+        - "9090:9090"
+    networks:
+      - monitor
+    restart: always
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password1!
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/provisioning/datasources/automatic.yml:/etc/grafana/provisioning/datasources/automatic.yml
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitor
+    restart: always

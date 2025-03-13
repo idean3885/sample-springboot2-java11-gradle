@@ -1,0 +1,11 @@
+task installGitHooks(type: Copy) {
+    from new File(rootProject.rootDir, 'gradle/pre-commit')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+}
+task deleteGitHooks(type: Delete) {
+    delete new File(rootProject.rootDir, '.git/hooks/pre-commit')
+}
+//installGitHooks.dependsOn deleteGitHooks
+prepareKotlinBuildScriptModel.dependsOn installGitHooks
+
+

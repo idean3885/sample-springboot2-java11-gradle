@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <title>Spring Boot2 sample project user</title>
+  <meta charset="utf-8">
+</head>
+<body>
+<script type="application/javascript">
+    const changePassword = () => {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        fetch(`api/members/v1/user/password`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            })
+        }).then(response => {
+            if (response.ok) {
+                alert('비밀번호가 변경되었습니다.\n변경된 비밀번호로 다시 로그인하시기 바랍니다.');
+                window.location.href = '/logout';
+            } else {
+                alert('비밀번호 변경에 실패했습니다.');
+            }
+        });
+    }
+
+    const withdraw = () => {
+        fetch(`api/members/v1/user`, {
+            method: 'delete'
+        }).then(response => {
+            if (response.ok) {
+                alert('회원 탈퇴가 완료되었습니다.\n그동안 이용해 주셔서 감사합니다.');
+                window.location.href = '/logout';
+            } else {
+                alert('회원 탈퇴에 실패했습니다.');
+            }
+        });
+    }
+</script>
+<h1>Spring Boot2 sample project user</h1>
+<p>스프링 부트2 샘플 프로젝트 사용자 페이지 입니다. USER 권한을 가진 사용자가 조회할 수 있습니다.</p>
+목차로 돌아가기 : <a href="/">index</a>
+<br/>
+<h3>비밀번호 변경</h3>
+<label for="currentPassword">현재 비밀번호</label>
+<input type="password" id="currentPassword" name="currentPassword" required>
+<br/>
+<label for="newPassword">새 비밀번호</label>
+<input type="password" id="newPassword" name="newPassword" required>
+<br/>
+<button type="button" onclick="changePassword()">비밀번호 변경</button>
+
+<hr/>
+<button type="button" onclick="withdraw()">회원 탈퇴</button>
+
+<hr/>
+로그아웃 : <a href="/logout">logout</a>
+</body>
+</html>

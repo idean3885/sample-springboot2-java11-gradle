@@ -1,0 +1,68 @@
+version: "3.8"
+networks:
+  db:
+    driver: bridge
+services:
+#  redis:
+#    image: redis:alpine
+#    labels:
+#      - "name=redis"
+#      - "mode=standalone"
+#    container_name: redis-container
+#    ports:
+#      - "6380:6379"
+#    expose:
+#      - "6379"
+#    healthcheck:
+#      test: [ “CMD”, “redis-cli”, “ping” ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 3
+#    networks:
+#      - db
+
+  mysql:
+    image: mysql:8.0.34
+    environment:
+      MYSQL_ROOT_PASSWORD: "password1!"
+    container_name: mysql-container
+    ports:
+      - "13306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    networks:
+      - db
+
+#  mariadb:
+#    image: mariadb:10.3.22
+#    labels:
+#      - "name=mariadb"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "password1!"
+#    container_name: mariadb-container
+#    ports:
+#      - "13307:3306"
+#    expose:
+#      - "3306"
+#    volumes:
+#      - ./:/docker-entrypoint-initdb.d
+#    healthcheck:
+#      interval: 30s
+#      retries: 3
+#      test:
+#        [
+#          "CMD",
+#          "healthcheck.sh",
+#          "--su-mysql",
+#          "--connect",
+#          "--innodb_initialized"
+#        ]
+#      timeout: 30s
+#    networks:
+#      - db

@@ -1,0 +1,40 @@
+version: '3.8'
+# TOOD: 모니터 하위에 종속된 네트워크 가져오기
+networks:
+  monitor:
+    driver: bridge
+  db:
+    driver: bridge
+services:
+  prometheus:
+    extends:
+      file: .docker/monitoring/docker-compose.yml
+      service: prometheus
+  grafana:
+    extends:
+      file: .docker/monitoring/docker-compose.yml
+      service: grafana
+  db:
+    extends:
+      file: .docker/db/docker-compose.yml
+      service: mysql
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sample-spring-boot2-java-gradle
+    container_name: server-container
+    environment:
+        - SPRING_PROFILES_ACTIVE=compose
+        - DB_CONTAINER_HOST=mysql-container
+        - MONITORING_CONTAINER_HOST=prometheus-container
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - monitor
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always

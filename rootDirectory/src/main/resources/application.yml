@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: sample-spring-boot2-java-gradle
+  profiles:
+    default: internal
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+
+# swagger doc
+springdoc:
+  version: v0.0.1
+  title: "Sample spring boot2 java gradle"
+  description: "스프링부트2 자바11 샘플 프로젝트"
+  packages-to-scan: com.example.samplespringboot2javagradle
+  api-docs:
+    path: /api-docs/json
+    groups.enabled: true
+  cache.disabled: true
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+
+# Actuator
+management:
+  server:
+    port: 8081
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}-${random.uuid}
