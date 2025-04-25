@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class SampleSpringBoot2JavaGradleApplication {
 
   public static void main(String[] args) {
+    System.out.println("test!");
     SpringApplication.run(SampleSpringBoot2JavaGradleApplication.class, args);
   }
 }
